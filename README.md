@@ -1,4 +1,4 @@
-# ffev
+# restaurant_forum_vue_version
 
 ## Project setup
 ```
