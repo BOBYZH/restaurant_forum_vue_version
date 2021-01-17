@@ -13,6 +13,11 @@ export default new Router({
       component: SignIn
     },
     {
+      path: '/signup',
+      name: 'sign-up',
+      component: () => import('../views/SignUp.vue') // 不先預載
+    },
+    {
       path: '*',
       name: 'not-found',
       component: NotFound
