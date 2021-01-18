@@ -37,7 +37,7 @@
         <!-- 用<template> 包住使用者登入後才會看到的內容，不用 <div>是為了不影響樣式、保持結構單純、不會生成 HTML -->
         <template v-if="isAuthenticated">
           <router-link
-            to="#"
+            :to="{ name: 'user', params: { id: currentUser.id } }"
             class="text-white mr-3"
           >
             {{ currentUser.name || '使用者' }} 您好

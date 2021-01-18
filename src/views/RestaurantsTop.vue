@@ -6,7 +6,6 @@
     </h1>
 
     <hr>
-
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.id"
@@ -15,7 +14,9 @@
     >
       <div class="row no-gutters">
         <div class="col-md-4">
-          <router-link :to="{name: 'restaurant', params: {id: restaurant.id}}">
+          <router-link
+            :to="{ name: 'restaurant', params: { id: restaurant.id } }"
+          >
             <img
               class="card-img"
               :src="restaurant.image"
@@ -27,16 +28,19 @@
             <h5 class="card-title">
               {{ restaurant.name }}
             </h5>
-            <span class="badge badge-secondary">收藏數：{{ restaurant.FavoritedUsers.length }}</span>
+            <span
+              class="badge badge-secondary"
+            >收藏數：{{ restaurant.FavoriteCount }}</span>
             <p class="card-text">
               {{ restaurant.description }}
             </p>
             <router-link
-              :to="{name: 'restaurant', params: {id: restaurant.id}}"
               class="btn btn-primary mr-2"
+              :to="{ name: 'restaurant', params: { id: restaurant.id } }"
             >
               Show
             </router-link>
+
             <button
               v-if="restaurant.isFavorited"
               type="button"
@@ -547,33 +551,45 @@ export default {
   components: {
     NavTabs
   },
-  data: function () {
+  data () {
     return {
-      restaurants: dummyData.restaurants
+      restaurants: []
     }
   },
+  created () {
+    this.fetchTopRestaurants()
+  },
   methods: {
+    fetchTopRestaurants () {
+      this.restaurants = dummyData.restaurants
+    },
     addFavorite (restaurantId) {
-      this.restaurants = this.restaurants.map(restaurant => {
-        if (restaurant.id === restaurantId) {
+      this.restaurants = this.restaurants
+        .map(restaurant => {
+          if (restaurant.id !== restaurantId) {
+            return restaurant
+          }
           return {
             ...restaurant,
+            FavoriteCount: restaurant.FavoriteCount + 1,
             isFavorited: true
           }
-        }
-        return restaurant
-      })
+        })
+        .sort((a, b) => b.FavoriteCount - a.FavoriteCount)
     },
     deleteFavorite (restaurantId) {
-      this.restaurants = this.restaurants.map(restaurant => {
-        if (restaurant.id === restaurantId) {
+      this.restaurants = this.restaurants
+        .map(restaurant => {
+          if (restaurant.id !== restaurantId) {
+            return restaurant
+          }
           return {
             ...restaurant,
+            FavoriteCount: restaurant.FavoriteCount - 1,
             isFavorited: false
           }
-        }
-        return restaurant
-      })
+        })
+        .sort((a, b) => b.FavoriteCount - a.FavoriteCount)
     }
   }
 
