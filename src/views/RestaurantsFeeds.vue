@@ -9,13 +9,11 @@
     <div class="row">
       <!-- 「最新餐廳」和「最新評論」這兩個區塊雖然不會和其他頁面共用，但是為了避免在同一個頁面放入太多的樣板和資料造成後續難以維護，因此我們還是會把他額外拆成兩個不同的元件。 -->
       <div class="col-md-6">
-        <h3>最新餐廳</h3>
         <!-- 用v-bind把資料綁定 -->
         <NewestRestaurants :restaurants="restaurants"/>
       </div>
       <div class="col-md-6">
         <!-- 最新評論 NewestComments-->
-        <h3>最新評論</h3>
         <NewestComments :comments="comments" />
       </div>
     </div>
