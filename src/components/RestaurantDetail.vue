@@ -33,10 +33,12 @@
     <div class="col-lg-8">
       <p>{{ restaurant.description }}</p>
       <div class="buttons">
-        <a
+        <router-link
           class="btn btn-primary btn-border mr-2"
-          href="#"
-        >Dashboard</a>
+          :to="{name: 'restaurant-dashboard', params:{id: restaurant.id}}"
+        >
+          Dashboard
+        </router-link>
 
         <button
           v-if="restaurant.isFavorited"
