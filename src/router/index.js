@@ -7,6 +7,7 @@ import Restaurants from '../views/Restaurants.vue'
 Vue.use(Router)
 
 export default new Router({
+  linkExactActiveClass: 'active', // 導覽頁籤會根據瀏覽的網址自動套用不同的 class(將自動產生的當前class名稱換成bootstrap的點擊效果)
   routes: [
     {
       path: '/',
