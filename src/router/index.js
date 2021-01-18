@@ -40,6 +40,11 @@ export default new Router({
       component: () => import('../views/RestaurantsTop.vue')
     },
     {
+      path: '/restaurants/:id', // 在/restaurants最下面，避免前面匹配到:id
+      name: 'restaurant',
+      component: () => import('../views/Restaurant.vue')
+    },
+    {
       path: '/users/top',
       name: 'users-top',
       component: () => import('../views/UsersTop.vue')
