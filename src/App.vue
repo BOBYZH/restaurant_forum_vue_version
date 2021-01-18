@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import 'bootstrap'
+import 'bootstrap' // JS file，因為在 node_module/bootstrap/package.json 的 main 中，已有指定預設路徑為 dist/js/bootstrap，在這種情況下就可以直接簡寫
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './components/Navbar'
 

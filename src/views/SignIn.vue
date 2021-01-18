@@ -1,7 +1,10 @@
 <template>
   <div class="container py-5">
     <!-- 預防表單自動提交 -->
-    <form class="w-100" @submit.prevent.stop="handleSubmit">
+    <form
+      class="w-100"
+      @submit.prevent.stop="handleSubmit"
+    >
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">
           Sign In
@@ -12,7 +15,7 @@
         <label for="email">email</label>
         <input
           id="email"
-          v-model預防表單自動提交預防表單自動提交
+          v-model="email"
           name="email"
           type="email"
           class="form-control"
@@ -45,7 +48,7 @@
       </button>
 
       <div class="text-center mb-3">
-        <!-- 避免瀏覽器預設的連結行為，只渲染不同的 component -->
+        <!-- 改用內部連結以免重新渲染或路由無法解析，並避免瀏覽器預設的連結行為，只渲染不同的 component -->
         <router-link to="/signup">
           Sign Up
         </router-link>

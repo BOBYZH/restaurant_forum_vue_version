@@ -16,7 +16,7 @@
           </router-link>
           &nbsp;
           <!-- 用三元運算子，避免未分類的資料顯示不出來 -->
-          <small>{{ restaurant.Category ? restaurant.Category.name : '未分類'}}</small>
+          <small>{{ restaurant.Category ? restaurant.Category.name : '未分類' }}</small>
         </h4>
         <p>{{ restaurant.description }}</p>
         {{ restaurant.createdAt | fromNow }}
@@ -37,7 +37,7 @@ export default {
   props: {
     restaurants: {
       type: Array,
-      required: true
+      required: true // 一定要傳進來，才不會出錯
     }
   }
 }
