@@ -15,7 +15,7 @@
           <small>{{ restaurant.Category ? restaurant.Category.name : '未分類'}}</small>
         </h4>
         <p>{{ restaurant.description }}</p>
-        {{ restaurant.createdAt }}
+        {{ restaurant.createdAt | fromNow }}
         <hr>
       </div>
     </div>
@@ -23,7 +23,19 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
+  // 用Vue 提供的 filter 方法替換為人性化時間
+  filters: {
+    fromNow (datetime) {
+      if (!datetime) {
+        return '-'
+      }
+      // 使用 moment 提供的 fromNow 方法
+      return moment(datetime).fromNow()
+    }
+  },
   // 加上 props 屬性取得父層資料
   props: {
     restaurants: {
