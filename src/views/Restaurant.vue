@@ -7,7 +7,12 @@
     />
     <hr>
     <!-- 餐廳評論 RestaurantComments -->
-    <restaurantComments :restaurant-comments="restaurantComments" />
+    <!-- 監聽 after-delete-comment 事件，若事件發生了，
+    就去執行 afterDeleteComment 動作(按下刪除建後請 API 伺服器把資料刪掉) -->
+     <restaurantComments
+      :restaurant-comments="restaurantComments"
+      @after-delete-comment="afterDeleteComment"
+    />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -105,6 +110,12 @@ export default {
       }
 
       this.restaurantComments = dummyData.restaurant.Comments
+    },
+    afterDeleteComment (commentId) {
+      // 以 filter 保留未被選擇的 comment.id
+      this.restaurantComments = this.restaurantComments.filter(
+        comment => comment.id !== commentId // 保留的是「沒被刪除的其他評論」，commentId是指哪一條評論被刪掉
+      )
     }
   }
 }
