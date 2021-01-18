@@ -23,19 +23,12 @@
 </template>
 
 <script>
-import moment from 'moment'
+// 載入撰寫好的 mixin
+import { fromNowFilter } from './../utils/mixins'
 
 export default {
-  // 用Vue 提供的 filter 方法替換為人性化時間
-  filters: {
-    fromNow (datetime) {
-      if (!datetime) {
-        return '-'
-      }
-      // 使用 moment 提供的 fromNow 方法
-      return moment(datetime).fromNow()
-    }
-  },
+  // 透過 mixins 屬性將撰寫好的 mixin 放入
+  mixins: [fromNowFilter],
   // 加上 props 屬性取得父層資料
   props: {
     restaurants: {

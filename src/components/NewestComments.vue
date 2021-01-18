@@ -23,16 +23,12 @@
 </template>
 
 <script>
-import moment from 'moment'
+// 載入撰寫好的 mixin
+import { fromNowFilter } from './../utils/mixins'
+
 export default {
-  filters: {
-    fromNow (datetime) {
-      if (!datetime) {
-        return '-'
-      }
-      return moment(datetime).fromNow()
-    }
-  },
+  // 透過 mixins 屬性將撰寫好的 mixin 放入
+  mixins: [fromNowFilter],
   props: {
     comments: {
       type: Array,
