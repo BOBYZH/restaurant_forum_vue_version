@@ -8,9 +8,11 @@
       :key="comment.id"
     >
       <h4>
-        <a href="#">
+        <router-link
+          :to="{ name: 'restaurant', params: {id: comment.Restaurant.id}}"
+        >
           {{ comment.Restaurant.name }}
-        </a>
+        </router-link>
       </h4>
       <p>{{ comment.text }}</p>by
       <a href="#">

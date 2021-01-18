@@ -10,7 +10,9 @@
       >
       <div class="card-body">
         <p class="card-text title-wrap">
-          <router-link :to="path">
+          <router-link
+            :to="{ name: 'restaurant', params: { id: restaurant.id }}"
+          >
             {{ restaurant.name }}
           </router-link>
         </p>
@@ -68,8 +70,7 @@ export default {
   },
   data () {
     return {
-      restaurant: this.initialRestaurant,
-      path: `/restaurants/${this.initialRestaurant.id}`
+      restaurant: this.initialRestaurant
     }
   },
   methods: {

@@ -9,7 +9,11 @@
         :key="restaurant.id"
       >
         <h4>
-          <a href="#">{{ restaurant.name }}</a>
+          <router-link
+            :to="{ name: 'restaurant', params: {id: restaurant.id}}"
+          >
+            {{ restaurant.name }}
+          </router-link>
           &nbsp;
           <!-- 用三元運算子，避免未分類的資料顯示不出來 -->
           <small>{{ restaurant.Category ? restaurant.Category.name : '未分類'}}</small>
