@@ -4,7 +4,7 @@
       <!-- 回到上一頁 previousPage -->
       <li
         v-show="previousPage"
-        class="page-item"
+        :class="['page-item', { disabled: currentPage === 1 }]"
       >
         <router-link
           class="page-link"
@@ -18,7 +18,6 @@
       <li
         v-for="page in totalPage"
         :key="page"
-        class="page-item"
         :class="['page-item', { active: currentPage === page }]"
       >
         <router-link
@@ -32,7 +31,7 @@
       <!-- 前往下一頁 nextPage -->
       <li
         v-show="nextPage"
-        class="page-item"
+        :class="['page-item', { disabled: currentPage === totalPage.length }]"
       >
         <router-link
           class="page-link"
@@ -48,10 +47,11 @@
 
 <script>
 export default {
+  name: 'RestaurantsPagination',
   props: {
     categoryId: {
-      type: Number,
-      default: -1
+      type: [Number, String],
+      default: ''
     },
     currentPage: {
       type: Number,
