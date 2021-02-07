@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -87,12 +87,21 @@
 
     <div class="form-group">
       <label for="image">Image</label>
+      <img
+        v-if="restaurant.image"
+        :src="restaurant.image"
+        class="d-block img-thumbnail mb-3"
+        width="200"
+        height="200"
+      >
+
       <input
         id="image"
         type="file"
         name="image"
         accept="image/*"
         class="form-control-file"
+        @change="handleFileChange"
       >
     </div>
 
@@ -157,6 +166,24 @@ export default {
   methods: {
     fetchCategories () {
       this.categories = dummyData.categories
+    },
+    handleFileChange (e) {
+      const { files } = e.target
+
+      if (files.length === 0) {
+        // 使用者沒有選擇上傳的檔案
+        this.restaurant.image = ''
+      } else {
+        // 否則產生預覽圖
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.restaurant.image = imageURL
+      }
+    },
+    handleSubmit (e) { // 將表單資料轉成 FormData 物件
+      const form = e.target // 取得表單本身<form></form>
+      const formData = new FormData(form) // 產生物件實例
+      // 傳遞給父層頁面，直接透過 $emit 發送一個叫做 after-submit 的事件，同時攜帶表單資料
+      this.$emit('after-submit', formData)
     }
   }
 }
