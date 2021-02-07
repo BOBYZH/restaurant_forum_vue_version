@@ -85,6 +85,11 @@ routes: [...]
       component: () => import('../views/AdminRestaurants.vue')
     },
     {
+      path: '/admin/restaurants/new', // 有指定名稱的路由，都需要放在動態路由前
+      name: 'admin-restaurant-new',
+      component: () => import('../views/AdminRestaurantNew.vue')
+    },
+    {
       path: '/admin/restaurants/:id',
       name: 'admin-restaurant',
       component: () => import('../views/AdminRestaurant.vue')
