@@ -144,8 +144,26 @@ const dummyData = {
   ]
 }
 
-export default {
+export default { // 用 default 設定一組預設值
   name: 'AdminRestaurantForm',
+  props: {
+    initialRestaurant: {
+      type: Object,
+      /*
+        為物件或陣列類型的資料設定預設值時，大括弧裡面的文字會被解析為有序宣告，
+        而不是物件的 key ，要記得把物件字面值包在圓括弧內
+       */
+      default: () => ({
+        name: '',
+        categoryId: '',
+        tel: '',
+        address: '',
+        description: '',
+        image: '',
+        openingHours: ''
+      })
+    }
+  },
   data () {
     return {
       restaurant: {
@@ -161,7 +179,15 @@ export default {
     }
   },
   created () {
+    // 畫面第一次渲染出來的時候，把各種資料呈現在樣板上
     this.fetchCategories()
+    this.restaurant = {
+      // 第一步先展開 data 裡的預設值，也就是空白表單
+      ...this.restaurant,
+      // 接著展開 props 裡的資料，也就是父層傳進來的資料；
+      // 如果沒有資料，就調動 default 的回傳值，仍然是空白表單
+      ...this.initialRestaurant
+    }
   },
   methods: {
     fetchCategories () {
