@@ -75,6 +75,11 @@ routes: [...]
       component: () => import('../views/User.vue')
     },
     {
+      path: '/users/:id/edit',
+      name: 'user-edit',
+      component: () => import('../views/UserEdit.vue')
+    },
+    {
       path: '/admin',
       exact: true,
       redirect: '/admin/restaurants'
