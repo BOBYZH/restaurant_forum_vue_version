@@ -75,24 +75,26 @@ export default {
     }
   },
   methods: {
-    handleSubmit (e) {
+    async handleSubmit (e) {
       // 如果 email 或 password 為空，則使用 Toast 提示
       // 然後 return 不繼續往後執行
-      if (!this.email || !this.password) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請填入 email 和 password'
-        })
-        return
-      }
-      // 前端沒收到伺服器的回應前，使用者將無法再次點擊送出按鈕
-      this.isProcessing = true
+      try {
+        if (!this.email || !this.password) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請填入 email 和 password'
+          })
+          return
+        }
+        // 前端沒收到伺服器的回應前，使用者將無法再次點擊送出按鈕
+        this.isProcessing = true
 
-      // 改成呼叫 authorizationAPI 裡的 signIn 方法
-      authorizationAPI.signIn({
-        email: this.email,
-        password: this.password
-      }).then(response => {
+        // 改成呼叫 authorizationAPI 裡的 signIn 方法
+        const response = await authorizationAPI.signIn({
+          email: this.email,
+          password: this.password
+        })
+
         console.log('response', response)
         // 取得 API 請求後的資料
         const { data } = response
@@ -107,7 +109,7 @@ export default {
 
         // 成功登入後轉址到餐聽首頁
         this.$router.push('/restaurants')
-      }).catch(error => {
+      } catch (error) {
         // 將密碼欄位清空
         this.password = ''
         // 顯示錯誤提示
@@ -118,7 +120,7 @@ export default {
         // 因為登入失敗，所以要把按鈕狀態還原
         this.isProcessing = false
         console.log('error', error)
-      })
+      }
     }
   }
 }
