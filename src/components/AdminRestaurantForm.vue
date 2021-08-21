@@ -1,5 +1,9 @@
 <template>
-  <form @submit.stop.prevent="handleSubmit">
+  <!-- 在 isLoading 為 false 時才將表單顯示出來 -->
+  <form
+    v-show="!isLoading"
+    @submit.stop.prevent="handleSubmit"
+  >
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -115,34 +119,9 @@
 </template>
 
 <script>
-const dummyData = {
-  categories: [
-    {
-      id: 1,
-      name: '中式料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 2,
-      name: '日本料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 3,
-      name: '義大利料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    {
-      id: 4,
-      name: '墨西哥料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    }
-  ]
-}
+// STEP 1: 匯入 adminAPI 和錯誤提示用的 Toast
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
 
 export default { // 用 default 設定一組預設值
   name: 'AdminRestaurantForm',
@@ -153,29 +132,26 @@ export default { // 用 default 設定一組預設值
         為物件或陣列類型的資料設定預設值時，大括弧裡面的文字會被解析為有序宣告，
         而不是物件的 key ，要記得把物件字面值包在圓括弧內
        */
-      default: () => ({
-        name: '',
-        categoryId: '',
-        tel: '',
-        address: '',
-        description: '',
-        image: '',
-        openingHours: ''
-      })
+      default: () => {
+        return {
+          name: '',
+          CategoryId: '',
+          tel: '',
+          address: '',
+          description: '',
+          image: '',
+          openingHours: ''
+        }
+      }
     }
   },
   data () {
     return {
+      categories: [],
       restaurant: {
-        name: '',
-        categoryId: '',
-        tel: '',
-        address: '',
-        description: '',
-        image: '',
-        openingHours: ''
+        ...this.initialRestaurant
       },
-      categories: []
+      isLoading: true
     }
   },
   created () {
@@ -190,9 +166,29 @@ export default { // 用 default 設定一組預設值
     }
   },
   methods: {
-    fetchCategories () {
-      this.categories = dummyData.categories
+    // STEP 2: 改成 async...await 語法
+    async fetchCategories () {
+      try {
+        // STEP 3: 向伺服器取得餐廳類別清單
+        const { data } = await adminAPI.categories.get()
+
+        if (data.status === 'error') { // 避免尚未收到資料時渲染空白結果
+          throw new Error(data.message)
+        }
+
+        this.categories = data.categories
+        this.isLoading = false
+      } catch (error) {
+        console.error(error.message)
+        this.isLoading = false
+        // STEP 4: 在 catch 中進行錯誤處理
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳類別，請稍後再試'
+        })
+      }
     },
+
     handleFileChange (e) {
       const { files } = e.target
 
