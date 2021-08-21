@@ -25,5 +25,21 @@ export default {
         Authorization: `Bearer ${getToken()}`
       }
     })
+  },
+  getTopUsers () {
+    return apiHelper.get('/users/top', {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  // 實作 POST 路由時，記得中間要補上一個資料參數 null
+  addFollowing ({ userId }) {
+    return apiHelper.post(`/following/${userId}`, null, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  deleteFollowing ({ userId }) {
+    return apiHelper.delete(`/following/${userId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }
