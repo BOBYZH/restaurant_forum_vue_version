@@ -112,8 +112,9 @@
     <button
       type="submit"
       class="btn btn-primary"
+      :disabled="isProcessing"
     >
-      送出
+      {{ isProcessing ? "處理中..." : "送出" }}
     </button>
   </form>
 </template>
@@ -142,6 +143,10 @@ export default { // 用 default 設定一組預設值
           image: '',
           openingHours: ''
         }
+      },
+      isProcessing: {
+        type: Boolean,
+        default: false
       }
     }
   },
@@ -202,6 +207,21 @@ export default { // 用 default 設定一組預設值
       }
     },
     handleSubmit (e) { // 將表單資料轉成 FormData 物件
+      // 避免使用者漏填
+      if (!this.restaurant.name) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填寫餐廳名稱'
+        })
+        return
+      } else if (!this.restaurant.categoryId) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請選擇餐廳類別'
+        })
+        return
+      }
+
       const form = e.target // 取得表單本身<form></form>
       const formData = new FormData(form) // 產生物件實例
       // 傳遞給父層頁面，直接透過 $emit 發送一個叫做 after-submit 的事件，同時攜帶表單資料
