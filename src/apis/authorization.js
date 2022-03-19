@@ -8,5 +8,10 @@ export default {
       email,
       password
     })
+  },
+  signUp (data) {
+    return apiHelper.post('/signup', {
+      ...data // 使用展開運算子(Spread operator)，將 data 內的所有屬性都放進去，可以不用一一寫
+    })
   }
 }
