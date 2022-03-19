@@ -3,6 +3,7 @@
     <!-- 由於這組資料會被使用者編輯，因此命名為 initial-restaurant -->
     <AdminRestaurantForm
       :initial-restaurant="restaurant"
+      :is-processing="isProcessing"
       @after-submit="handleAfterSubmit"
     />
   </div>
@@ -10,28 +11,8 @@
 
 <script>
 import AdminRestaurantForm from './../components/AdminRestaurantForm.vue'
-
-const dummyData = {
-  restaurant: {
-    id: 1,
-    name: 'Laurence Reynolds',
-    tel: '1-657-067-3756 x9782',
-    address: '187 Kirlin Squares',
-    opening_hours: '08:00',
-    description: 'sit est mollitia',
-    image: 'https://loremflickr.com/320/240/restaurant,food/?random=91.29816290184887',
-    viewCounts: 1,
-    createdAt: '2019-07-30T16:24:55.432Z',
-    updatedAt: '2019-07-30T17:26:43.260Z',
-    CategoryId: 3,
-    Category: {
-      id: 3,
-      name: '義大利料理',
-      createdAt: '2019-07-30T16:24:55.429Z',
-      updatedAt: '2019-07-30T16:24:55.429Z'
-    }
-  }
-}
+import adminAPI from './../apis/admin'
+import { Toast } from './../utils/helpers'
 
 export default {
   components: {
@@ -48,7 +29,8 @@ export default {
         description: '',
         image: '',
         openingHours: ''
-      }
+      },
+      isProcessing: false
     }
   },
   created () { // 掛載方法
@@ -56,27 +38,72 @@ export default {
     const { id } = this.$route.params
     this.fetchRestaurant(id)
   },
+  // 避免使用者直接修改網址上的 id，使網址改變不觸發 created階段造成資料不同步
+  beforeRouteUpdate (to, from, next) {
+    // 監聽路由變化：路由改變時重新抓取資料
+    const { id } = to.params
+    this.fetchRestaurant(id)
+    next()
+  },
   methods: {
-    handleAfterSubmit (formData) {
+    async handleAfterSubmit (formData) {
       // 透過 API 將表單資料送到伺服器
-      for (const [name, value] of formData.entries()) {
-        console.log(name + ': ' + value)
+      // for (const [name, value] of formData.entries()) {
+      //   console.log(name + ': ' + value)
+      // }
+      try {
+        this.isProcessing = true
+        const { data } = await adminAPI.restaurants.update({
+          restaurantId: this.restaurant.id,
+          formData
+        })
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
+        this.$router.push({ name: 'admin-restaurants' })
+      } catch (error) {
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新餐廳資料，請稍後再試'
+        })
       }
     },
     // 設定掛載資料的時機與動作
-    fetchRestaurant (restaurantId) {
-      console.log('fetchRestaurant id:', restaurantId)
-      const { restaurant } = dummyData
-      this.restaurant = {
-        ...this.restaurant,
-        id: restaurant.id,
-        name: restaurant.name,
-        categoryId: restaurant.CategoryId,
-        tel: restaurant.tel,
-        address: restaurant.address,
-        description: restaurant.description,
-        image: restaurant.image,
-        openingHours: restaurant.opening_hours
+    async fetchRestaurant (restaurantId) {
+      // console.log('fetchRestaurant id:', restaurantId)
+      try {
+        const { data } = await adminAPI.restaurants.getDetail({ restaurantId })
+
+        const {
+          id,
+          name,
+          tel,
+          address,
+          opening_hours: openingHours,
+          description,
+          image,
+          CategoryId: categoryId
+        } = data.restaurant
+
+        this.restaurant = {
+          ...this.restaurant,
+          id,
+          name,
+          tel,
+          address,
+          openingHours,
+          description,
+          image,
+          categoryId
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳資料，請稍後再試'
+        })
       }
     }
   }
