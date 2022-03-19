@@ -61,46 +61,12 @@
 </template>
 
 <script>
-// ./src/components/Navbar.vue
-// seed data
-const dummyUser = { // 先模擬一組登入使用者的假資料
-  currentUser: {
-    id: 1,
-    name: '管理員',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-    isAdmin: true
-  },
-  isAuthenticated: true
-}
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Navbar',
-  // Vue 會在沒有資料時使用此預設值
-  data () {
-    return {
-      currentUser: {
-        id: -1,
-        name: '',
-        email: '',
-        image: '',
-        isAdmin: false
-      },
-      isAuthenticated: false
-    }
-  },
-  created () { // 在Vue 生命週期裡的 created 階段自動執行
-    this.fetchUser() // 模擬「把 dummyUser 蓋過 currentUser」的動作
-  },
-  methods: {
-    fetchUser () {
-      this.currentUser = {
-        // 用了 spread 運算子把兩組資料打開，在 key 值相同時，後者會覆蓋之前的資料
-        ...this.currentUser,
-        ...dummyUser.currentUser
-      }
-      this.isAuthenticated = dummyUser.isAuthenticated
-    }
+  computed: {
+    // 使用展開運算式，將store中的資料直接覆蓋過來，更新成目前的使用者資料
+    ...mapState(['currentUser', 'isAuthenticated'])
   }
 }
 </script>
