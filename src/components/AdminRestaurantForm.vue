@@ -159,6 +159,15 @@ export default { // 用 default 設定一組預設值
       isLoading: true
     }
   },
+  // 利用 watch 來監控 initialRestaurant，一旦 API 回傳，initialRestaurant就會變更以更新 restaurant資料
+  watch: {
+    initialRestaurant (newValue) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...newValue
+      }
+    }
+  },
   created () {
     // 畫面第一次渲染出來的時候，把各種資料呈現在樣板上
     this.fetchCategories()
