@@ -6,10 +6,15 @@ import NotFound from '../views/NotFound.vue'
 import SignIn from '../views/SignIn.vue'
 import Restaurants from '../views/Restaurants.vue'
 
+//  載入Vuex 的設定檔來呼叫 action
+import store from './../store'
+
 Vue.use(Router)
 
-export default new Router({ // 網站正式發佈以後，要使用 hash mode 才不會碰到無法取得伺服器回應的情況
-/*
+// 程式碼調動的原因，是因為我們想把 beforeEach 的設定放進 Vue Router 本身，我們需要宣告一個 router 變數來存放 Vue Router 的實例
+const router = new Router({
+  // 網站正式發佈以後，要使用 hash mode 才不會碰到無法取得伺服器回應的情況
+  /*
 如果看不慣網址列多出 # ，還是想要在正式環境使用 history mode，需要搭配後端網頁伺服器 (apache、nginx、IIS) 來設定頁面導向(主動設置404頁面)，才可以避免出現 Error 404 頁面，詳細設定方法需要參考 HTML5 History 模式
 
 Example:
@@ -121,3 +126,12 @@ routes: [...]
     }
   ]
 })
+
+// 監聽全域的「切換路由」事件
+router.beforeEach((to, from, next) => {
+  // 使用 dispatch(指派) 呼叫 Vuex 內的 action
+  store.dispatch('fetchCurrentUser')
+  next()
+})
+
+export default router
