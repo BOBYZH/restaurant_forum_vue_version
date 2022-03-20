@@ -90,6 +90,14 @@ export default {
       restaurant: this.initialRestaurant
     }
   },
+  watch: { // 使用 Vue 的 watch 屬性監控內容變動，避免子元件還沒有拿到 API 資料，使畫面沒有變更
+    initialRestaurant (newValue) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...newValue
+      }
+    }
+  },
   methods: {
     addFavorite () {
       this.restaurant = {
