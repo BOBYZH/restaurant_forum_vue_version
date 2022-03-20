@@ -78,7 +78,11 @@
 </template>
 
 <script>
+import { emptyImageFilter } from './../utils/mixins'
+
 export default {
+  name: 'RestaurantDetail',
+  mixins: [emptyImageFilter],
   props: {
     initialRestaurant: {
       type: Object,
