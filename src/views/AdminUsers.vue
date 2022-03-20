@@ -89,17 +89,33 @@ export default {
         })
       }
     },
-    toggleUserRole ({ userId, isAdmin }) {
-      this.users = this.users.map(user => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            isAdmin: !isAdmin
-          }
+    async toggleUserRole ({ userId, isAdmin }) {
+      try {
+        const { data } = await adminAPI.users.update({
+          userId,
+          isAdmin: (!isAdmin).toString() // 避免型別轉換錯誤
+        })
+        if (data.status === 'error') {
+          throw new Error(data.message)
         }
-        return user
-      })
+        this.users = this.users.map(user => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isAdmin: !isAdmin // 反轉管理員權限的布林值
+            }
+          }
+          return user
+        })
+      } catch (error) {
+        console.error(error.message)
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新會員角色，請稍後再試'
+        })
+      }
     }
   }
 }
+
 </script>
