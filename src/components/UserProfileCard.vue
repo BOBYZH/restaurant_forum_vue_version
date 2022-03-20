@@ -102,6 +102,7 @@ export default {
           throw new Error(data.message)
         }
         this.isFollowed = true
+        this.$emit('after-alter-follow', userId)
       } catch (error) {
         console.error(error.message)
         Toast.fire({
@@ -117,6 +118,7 @@ export default {
           throw new Error(data.message)
         }
         this.isFollowed = false
+        this.$emit('after-alter-follow', userId)
       } catch (error) {
         console.error(error.message)
         Toast.fire({

@@ -5,6 +5,7 @@
         :user="user"
         :is-current-user="currentUser.id === user.id"
         :initial-is-followed="isFollowed"
+        @after-alter-follow="afterAlterFollow"
       />
       <div class="row">
         <div class="col-md-4">
@@ -121,6 +122,8 @@ export default {
         this.followings = Followings
         this.followers = Followers
         this.favoritedRestaurants = FavoritedRestaurants
+
+        console.log('Follower', this.followers)
       } catch (error) {
         console.error(error.message)
         Toast.fire({
@@ -128,6 +131,9 @@ export default {
           title: '無法取得使用者資料，請稍後再試'
         })
       }
+    },
+    afterAlterFollow (userId) {
+      this.fetchUser(userId)
     }
   }
 }
