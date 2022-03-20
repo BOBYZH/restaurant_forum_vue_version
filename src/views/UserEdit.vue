@@ -38,7 +38,7 @@
         type="submit"
         class="btn btn-primary"
       >
-        Submit
+        {{ isProcessing ? '資料更新中...' : 'Submit' }}
       </button>
     </form>
   </div>
@@ -47,13 +47,17 @@
 <script>
 import { mapState } from 'vuex'
 
+import usersAPI from './../apis/users'
+import { Toast } from './../utils/helpers'
+
 export default {
   data () {
     return {
       id: 0,
       image: '',
       name: '',
-      email: ''
+      email: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -98,12 +102,42 @@ export default {
       const imageURL = window.URL.createObjectURL(files[0])
       this.image = imageURL
     },
-    handleSubmit (e) {
-      const form = e.target
-      const formData = new FormData(form)
-      // TODO: 透過 API 向伺服器更新使用者
-      for (const [name, value] of formData.entries()) {
-        console.log(name + ': ' + value)
+    async handleSubmit (e) {
+      try {
+        // 避免未填寫即將資料送出
+        if (!this.name) {
+          Toast.fire({
+            icon: 'warning',
+            title: '您尚未填寫姓名'
+          })
+          return
+        }
+
+        const form = e.target
+        const formData = new FormData(form)
+
+        this.isProcessing = true
+        // 透過 API 向伺服器更新使用者
+        const { data } = await usersAPI.update({
+          userId: this.id,
+          formData
+        })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        // 更新成功後導向到使用者資料頁面
+        this.$router.push({ name: 'user', params: { id: this.id } })
+        // for (const [name, value] of formData.entries()) {
+        //   console.log(name + ': ' + value)
+        // }
+      } catch (error) {
+        console.error(error.message)
+        this.isProcessing = false
+        Toast.fire({
+          icon: 'error',
+          title: '無法更新使用者資料，請稍後再試'
+        })
       }
     }
   }
