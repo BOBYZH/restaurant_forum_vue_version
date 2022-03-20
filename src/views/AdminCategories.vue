@@ -107,7 +107,6 @@
 
 <script>
 import AdminNav from '@/components/AdminNav'
-import uuid from 'uuid/v4'
 
 //  2. 定義API取得的資料與提示訊息
 import adminAPI from './../apis/admin'
@@ -218,7 +217,7 @@ export default {
 
         // 將新的類別添加到陣列中
         this.categories.push({
-          id: uuid(),
+          id: data.categoryId,
           name: this.newCategoryName,
           isEditing: false // 新增後，就不再是編輯狀態
         })
