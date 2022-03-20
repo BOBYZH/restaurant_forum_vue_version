@@ -2,87 +2,69 @@
   <div class="container py-4">
     <div>
       <h1>{{ restaurant.name }}</h1>
-      <p>[{{ restaurant.Category.name }}]</p>
+      <p>[{{ restaurant.categoryName }}]</p>
     </div>
     <ul>
-      <li>有<span>{{ restaurant.Comments.length }}</span>筆評論</li>
-      <li>有<span>{{ restaurant.FavoritedUsers.length }}</span>人收藏這家餐廳</li>
+      <li>有<span>{{ restaurant.commentsLength }}</span>筆評論</li>
+      <li>有<span>{{ restaurant.viewCounts }}</span>人收藏這家餐廳</li>
     </ul>
     <a href="javascript:history.back()">回上一頁</a>
   </div>
 </template>>
 
 <script>
-const dummyData = {
-  restaurant: {
-    id: 3,
-    name: 'Abel Blanda',
-    tel: '1-554-475-7456 x210',
-    address: '4510 Guiseppe Lights',
-    opening_hours: '08:00',
-    description:
-      'Quibusdam aliquid perferendis quam. Aspernatur sit dolor aliquid unde iure. Qui voluptatibus aperiam autem fugit corrupti dolore. Nostrum ipsa est quas voluptatibus quia debitis veniam. Libero harum assumenda in impedit. Aliquid consequatur voluptatibus quo tenetur nesciunt enim suscipit voluptatibus.\n \rVitae eos magni nihil. Facilis laborum et labore consequuntur dolores quis aut rem porro. Enim suscipit cumque dolorem odio sint alias. Molestias excepturi esse maxime magnam eius aut non soluta.\n \rEum commodi ea itaque aut quam. Nemo nobis aliquid quis dolorem. Aspernatur aut non consequatur ad perferendis maiores sunt eveniet.',
-    image: 'https://loremflickr.com/320/240/food,dessert,restaurant/?random=3',
-    createdAt: '2019-06-22T09:00:43.000Z',
-    updatedAt: '2019-06-22T09:00:43.000Z',
-    CategoryId: 4,
-    Category: {
-      id: 4,
-      name: '墨西哥料理',
-      createdAt: '2019-06-22T09:00:43.000Z',
-      updatedAt: '2019-06-22T09:00:43.000Z'
-    },
-    FavoritedUsers: [
-      {
-        id: 1,
-        name: 'root',
-        email: 'root@example.com',
-        password:
-          '$2a$10$3.cGoUF1lkEfQ2Oi57VpC.xVU3/8NS6yJzBQ0VJKV9AeW0e1trmmS',
-        image: 'https://i.imgur.com/JtQJRMZ.png',
-        isAdmin: true,
-        createdAt: '2019-06-22T09:00:43.000Z',
-        updatedAt: '2019-06-23T01:15:48.000Z',
-        Favorite: {
-          UserId: 1,
-          RestaurantId: 3,
-          createdAt: '2019-06-24T15:03:35.000Z',
-          updatedAt: '2019-06-24T15:03:35.000Z'
-        }
-      }
-    ],
-    LikedUsers: [],
-    Comments: [
-      {
-        id: 10,
-        text: 'Nisi quam dolorem debitis deserunt esse praesentium et.',
-        UserId: 1,
-        RestaurantId: 3,
-        createdAt: '2019-06-22T09:00:43.000Z',
-        updatedAt: '2019-06-22T09:00:43.000Z',
-        User: {
-          id: 1,
-          name: 'root',
-          email: 'root@example.com',
-          password:
-            '$2a$10$3.cGoUF1lkEfQ2Oi57VpC.xVU3/8NS6yJzBQ0VJKV9AeW0e1trmmS',
-          image: 'https://i.imgur.com/JtQJRMZ.png',
-          isAdmin: true,
-          createdAt: '2019-06-22T09:00:43.000Z',
-          updatedAt: '2019-06-23T01:15:48.000Z'
-        }
-      }
-    ]
-  },
-  isFavorited: true,
-  isLiked: false
-}
+import restaurantsAPI from './../apis/restaurants'
+import { Toast } from './../utils/helpers'
+
 export default {
-  data: function () {
+  name: 'RestaurantDashboard',
+  data () {
     return {
-      restaurant: dummyData.restaurant
+      restaurant: {
+        id: -1,
+        name: '',
+        categoryName: '',
+        commentsLength: 0,
+        viewCounts: 0
+      }
+    }
+  },
+  created () {
+    const { id: restaurantId } = this.$route.params
+    this.fetchRestaurant(restaurantId)
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id: restaurantId } = to.params
+    this.fetchRestaurant(restaurantId)
+    next()
+  },
+  methods: {
+    async fetchRestaurant (restaurantId) {
+      try {
+        const { data } = await restaurantsAPI.getRestaurant({ restaurantId })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
+        const { id, name, Category, Comments, viewCounts } = data.restaurant
+        console.log('data', data.restaurant)
+        this.restaurant = {
+          ...this.restaurant,
+          id,
+          name,
+          categoryName: Category ? Category.name : '未分類',
+          commentsLength: Comments.length,
+          viewCounts
+        }
+        console.log('this', this.restaurant)
+      } catch (error) {
+        console.error(error.message)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得餐廳資料，請稍後再試'
+        })
+      }
     }
   }
-
 }
 </script>
