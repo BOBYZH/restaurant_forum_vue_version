@@ -9,6 +9,17 @@ import Restaurants from '../views/Restaurants.vue'
 //  載入Vuex 的設定檔來呼叫 action
 import store from './../store'
 
+// 驗證使用者有無 isAdmin 權限的獨立方法
+const authorizeIsAdmin = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser && !currentUser.isAdmin) {
+    next('/404')
+    return
+  }
+
+  next()
+}
+
 Vue.use(Router)
 
 // 程式碼調動的原因，是因為我們想把 beforeEach 的設定放進 Vue Router 本身，我們需要宣告一個 router 變數來存放 Vue Router 的實例
@@ -92,32 +103,38 @@ routes: [...]
     {
       path: '/admin/restaurants',
       name: 'admin-restaurants',
-      component: () => import('../views/AdminRestaurants.vue')
+      component: () => import('../views/AdminRestaurants.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '/admin/restaurants/new', // 有指定名稱的路由，都需要放在動態路由前
       name: 'admin-restaurant-new',
-      component: () => import('../views/AdminRestaurantNew.vue')
+      component: () => import('../views/AdminRestaurantNew.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '/admin/restaurants/:id/edit',
       name: 'admin-restaurant-edit',
-      component: () => import('../views/AdminRestaurantEdit.vue')
+      component: () => import('../views/AdminRestaurantEdit.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '/admin/restaurants/:id',
       name: 'admin-restaurant',
-      component: () => import('../views/AdminRestaurant.vue')
+      component: () => import('../views/AdminRestaurant.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '/admin/users',
       name: 'admin-users',
-      component: () => import('../views/AdminUsers.vue')
+      component: () => import('../views/AdminUsers.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '/admin/categories',
       name: 'admin-categories',
-      component: () => import('../views/AdminCategories.vue')
+      component: () => import('../views/AdminCategories.vue'),
+      beforeEnter: authorizeIsAdmin
     },
     {
       path: '*',
