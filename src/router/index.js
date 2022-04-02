@@ -128,9 +128,46 @@ routes: [...]
 })
 
 // 監聽全域的「切換路由」事件
-router.beforeEach((to, from, next) => {
-  // 使用 dispatch(指派) 呼叫 Vuex 內的 action
-  store.dispatch('fetchCurrentUser')
+router.beforeEach(async (to, from, next) => { // 用非同步先檢查是否確實登入
+  /*
+  比起每次切換路由時都重新驗證一次 token 會增加伺服器負擔，
+  先將一開始 isAuthenticated 的狀態，從原本固定的 false改至從 Vuex 的 state 去取得當前的 isAuthenticated 狀態，
+  只要使用者之前有成功驗證、且 token 沒有變更，就不需要再重新向伺服器去請求驗證了
+   */
+
+  // 取得瀏覽器localStorage與Vuex store的token、登入狀態來比對
+  const tokenInLocalStorage = localStorage.getItem(
+    'token'
+  )
+  const tokenInStore = store.state.token
+  let isAuthenticated = store.state.isAuthenticated
+
+  // 比較 localStorage 和 store 中的 token 是否一樣
+  if (
+    tokenInLocalStorage && tokenInLocalStorage !== tokenInStore
+  ) {
+    // 使用 dispatch(指派) 呼叫 Vuex 內的 action
+    isAuthenticated = await store.dispatch( // 有 token 的情況下，才向後端驗證
+      'fetchCurrentUser'
+    )
+  }
+
+  // 如果 token 無效，去需要權限的頁面時，則轉址到登入頁
+  if (
+    !isAuthenticated && to.name !== 'sign-in' && to.name !== 'sign-up'
+  ) {
+    next('/signin')
+    return
+  }
+
+  // 如果 token 有效，去登入註冊頁時，則轉址到餐聽首頁
+  if (
+    isAuthenticated && to.name === 'sign-in'
+  ) {
+    next('/restaurants')
+    return
+  }
+
   next()
 })
 

@@ -15,7 +15,8 @@ export default new Vuex.Store({
       image: '',
       isAdmin: false
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: '' // 方便存取token
   },
   mutations: {
     // 全域版本的methods 屬性，設定函式修改 state 的資料
@@ -32,11 +33,17 @@ export default new Vuex.Store({
       }
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
+      // 將使用者驗證用的 token 儲存在 state 中
+      state.token = localStorage.getItem(
+        'token'
+      )
     },
     // 使用者登出的動作
     revokeAuthentication (state) {
       state.currentUser = {}
       state.isAuthenticated = false
+      // 登出時一併將 state 內的 token 移除
+      state.token = ''
       localStorage.removeItem('token')
     }
   },
@@ -60,8 +67,12 @@ export default new Vuex.Store({
           image,
           isAdmin
         })
+        return true // 判斷是否在登入狀態
       } catch (error) {
         console.error(error.message)
+        // 驗證失敗的話一併觸發登出的行為，以清除 state 中的 token
+        commit('revokeAuthentication')
+        return false // 判斷是否在登入狀態
       }
     }
   }
