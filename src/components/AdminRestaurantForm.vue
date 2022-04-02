@@ -1,7 +1,9 @@
 <template>
   <!-- 在 isLoading 為 false 時才將表單顯示出來 -->
+  <Spinner v-if="isLoading" />
   <form
     v-show="!isLoading"
+    v-else
     @submit.stop.prevent="handleSubmit"
   >
     <div class="form-group">
@@ -123,9 +125,13 @@
 // STEP 1: 匯入 adminAPI 和錯誤提示用的 Toast
 import adminAPI from './../apis/admin'
 import { Toast } from './../utils/helpers'
+import Spinner from './../components/Spinner'
 
 export default { // 用 default 設定一組預設值
   name: 'AdminRestaurantForm',
+  components: {
+    Spinner
+  },
   props: {
     initialRestaurant: {
       type: Object,
