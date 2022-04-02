@@ -56,7 +56,7 @@
       </div>
 
       <p class="mt-5 mb-3 text-muted text-center">
-        &copy; 2017-2021
+        &copy; 2017-
       </p>
     </form>
   </div>

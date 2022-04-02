@@ -83,7 +83,7 @@
       </div>
 
       <p class="mt-5 mb-3 text-muted text-center">
-        © 2017-2018
+        © 2017-
       </p>
     </form>
   </div>
