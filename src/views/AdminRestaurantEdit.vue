@@ -18,6 +18,13 @@ export default {
   components: {
     AdminRestaurantForm
   },
+  // 避免使用者直接修改網址上的 id，使網址改變不觸發 created階段造成資料不同步
+  beforeRouteUpdate (to, from, next) {
+    // 監聽路由變化：路由改變時重新抓取資料
+    const { id } = to.params
+    this.fetchRestaurant(id)
+    next()
+  },
   data () {
     return {
       restaurant: {
@@ -37,13 +44,6 @@ export default {
   //  取得網址上的 id，才會知道現在編輯的是哪一筆餐廳資料
     const { id } = this.$route.params
     this.fetchRestaurant(id)
-  },
-  // 避免使用者直接修改網址上的 id，使網址改變不觸發 created階段造成資料不同步
-  beforeRouteUpdate (to, from, next) {
-    // 監聽路由變化：路由改變時重新抓取資料
-    const { id } = to.params
-    this.fetchRestaurant(id)
-    next()
   },
   methods: {
     async handleAfterSubmit (formData) {

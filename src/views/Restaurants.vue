@@ -51,6 +51,12 @@ export default {
     RestaurantsPagination,
     Spinner
   },
+  // 使用 beforeRouteUpdate 方法取得使用者路由變化
+  beforeRouteUpdate (to, from, next) {
+    const { page = '', categoryId = '' } = to.query
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
+    next()
+  },
   data () {
     return { // 沒有DummyDate或API資料時的預設值
       categories: [],
@@ -66,12 +72,6 @@ export default {
     // 這裡會向伺服器依據餐廳類別與頁碼參數請求資料
     const { page = '', categoryId = '' } = this.$route.query
     this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
-  },
-  // 使用 beforeRouteUpdate 方法取得使用者路由變化
-  beforeRouteUpdate (to, from, next) {
-    const { page = '', categoryId = '' } = to.query
-    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId })
-    next()
   },
   methods: {
     // STEP 2：將 fetchRestaurants 改成 async...await 的語法

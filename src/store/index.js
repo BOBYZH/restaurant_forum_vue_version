@@ -1,10 +1,7 @@
-import Vue from 'vue'
 import Vuex from 'vuex'
 import usersAPI from './../apis/users'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
+export default Vuex.createStore({
   state: {
     // 全域版本的data 屬性
     // 設定使用者資料與權限

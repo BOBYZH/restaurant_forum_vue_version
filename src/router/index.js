@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import Router, { createRouter, createWebHashHistory } from 'vue-router'
 
 // 一定會經過的頁面直接在路由裡載入，除此之外的頁面皆用動態載入
 import NotFound from '../views/NotFound.vue'
@@ -23,7 +23,9 @@ const authorizeIsAdmin = (to, from, next) => {
 Vue.use(Router)
 
 // 程式碼調動的原因，是因為我們想把 beforeEach 的設定放進 Vue Router 本身，我們需要宣告一個 router 變數來存放 Vue Router 的實例
-const router = new Router({
+const router = createRouter({
+  history: createWebHashHistory(),
+
   // 網站正式發佈以後，要使用 hash mode 才不會碰到無法取得伺服器回應的情況
   /*
 如果看不慣網址列多出 # ，還是想要在正式環境使用 history mode，需要搭配後端網頁伺服器 (apache、nginx、IIS) 來設定頁面導向(主動設置404頁面)，才可以避免出現 Error 404 頁面，詳細設定方法需要參考 HTML5 History 模式
@@ -35,7 +37,9 @@ routes: [...]
 })
 */
 
-  linkExactActiveClass: 'active', // 導覽頁籤會根據瀏覽的網址自動套用不同的 class(將自動產生的當前class名稱換成bootstrap的點擊效果)
+  // 導覽頁籤會根據瀏覽的網址自動套用不同的 class(將自動產生的當前class名稱換成bootstrap的點擊效果)
+  linkExactActiveClass: 'active',
+
   routes: [
     {
       path: '/',

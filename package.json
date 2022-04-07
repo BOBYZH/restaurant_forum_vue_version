@@ -15,9 +15,9 @@
     "moment": "^2.29.1",
     "popper.js": "^1.16.1",
     "sweetalert2": "^10.15.5",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vue": "^3.0.0-beta.1",
+    "vue-router": "^4.0.0-alpha.6",
+    "vuex": "^4.0.0-alpha.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -25,6 +25,7 @@
     "@vue/cli-plugin-router": "^4.5.10",
     "@vue/cli-plugin-vuex": "~4.5.14",
     "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0-beta.1",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
@@ -32,8 +33,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "eslint-plugin-vue": "^7.0.0-alpha.0",
+    "vue-cli-plugin-vue-next": "~0.1.4"
   },
   "eslintConfig": {
     "root": true,
@@ -41,7 +42,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/vue3-essential",
       "eslint:recommended",
       "@vue/standard"
     ],

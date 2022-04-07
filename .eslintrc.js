@@ -3,7 +3,7 @@ module.exports = {
     // 在這裡可以添加你想要使用的風格規範，例如：
     // 'eslint:recommended',
     'eslint:recommended',
-    'plugin:vue/recommended',
+    'plugin:vue/vue3-recommended',
     '@vue/standard'
   ],
   rules: {

@@ -61,6 +61,11 @@ export default {
     Spinner
   },
   mixins: [emptyImageFilter],
+  beforeRouteUpdate (to, from, next) { // 監聽路由變化，避免手動改網址後資料沒更新
+    const { id } = to.params
+    this.fetchRestaurant(id)
+    next()
+  },
   data () {
     return {
       restaurant: {
@@ -79,11 +84,6 @@ export default {
   mounted () {
     const { id: restaurantId } = this.$route.params
     this.fetchRestaurant(restaurantId)
-  },
-  beforeRouteUpdate (to, from, next) { // 監聽路由變化，避免手動改網址後資料沒更新
-    const { id } = to.params
-    this.fetchRestaurant(id)
-    next()
   },
   methods: {
     async fetchRestaurant (restaurantId) {
