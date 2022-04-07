@@ -20,21 +20,23 @@
     "vuex": "^4.0.0-alpha.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
     "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "^4.5.10",
+    "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "^4.5.10",
     "@vue/cli-plugin-vuex": "~4.5.14",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0-beta.1",
-    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/eslint-config-standard": "^6.1.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^7.0.0-alpha.0",
-    "vue-cli-plugin-vue-next": "~0.1.4"
+    "eslint-plugin-vue": "^8.0.3",
+    "lint-staged": "^11.1.2"
   },
   "eslintConfig": {
     "root": true,
@@ -47,7 +49,7 @@
       "@vue/standard"
     ],
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser"
     },
     "rules": {}
   },
@@ -55,5 +57,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  }
 }
