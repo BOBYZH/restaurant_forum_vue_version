@@ -10,7 +10,7 @@
         :to="{name: 'restaurant', params: { id: favoritedRestaurant.id }}"
       >
         <img
-          :src="favoritedRestaurant.image | emptyImage"
+          :src="emptyImage(favoritedRestaurant.image)"
           width="60"
           height="60"
           class="mr-1"

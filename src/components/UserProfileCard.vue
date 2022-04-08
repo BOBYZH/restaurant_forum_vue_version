@@ -63,13 +63,13 @@
 </template>
 
 <script>
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
 export default {
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   props: {
     user: {
       type: Object,
@@ -84,6 +84,7 @@ export default {
       required: true
     }
   },
+  emits: ['after-alter-follow'],
   data () {
     return {
       isFollowed: this.initialIsFollowed

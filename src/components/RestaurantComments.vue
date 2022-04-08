@@ -24,7 +24,7 @@
         </h3>
         <p>{{ comment.text }}</p>
         <footer class="blockquote-footer">
-          {{ comment.createdAt | fromNow }}
+          {{ fromNow(comment.createdAt) }}
         </footer>
       </blockquote>
       <hr>
@@ -34,7 +34,7 @@
 
 <script>
 // 載入撰寫好的 mixin
-import { fromNowFilter } from './../utils/mixins'
+import { fromNowMethod } from './../utils/mixins'
 
 import { mapState } from 'vuex'
 import commentsAPI from './../apis/comments'
@@ -42,13 +42,14 @@ import { Toast } from './../utils/helpers'
 
 export default {
   // 透過 mixins 屬性將撰寫好的 mixin 放入
-  mixins: [fromNowFilter],
+  mixins: [fromNowMethod],
   props: {
     restaurantComments: {
       type: Array,
       required: true
     }
   },
+  emits: ['after-delete-comment'],
   computed: {
     ...mapState(['currentUser'])
   },

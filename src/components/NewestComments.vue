@@ -18,7 +18,7 @@
       <router-link :to="{ name: 'user', params: { id: comment.User.id } }">
         {{ comment.User.name }}
       </router-link>
-      {{ comment.createdAt | fromNow }}
+      {{ fromNow(comment.createdAt) }}
       <hr>
     </div>
   </div>
@@ -26,11 +26,11 @@
 
 <script>
 // 載入撰寫好的 mixin
-import { fromNowFilter } from './../utils/mixins'
+import { fromNowMethod } from './../utils/mixins'
 
 export default {
   // 透過 mixins 屬性將撰寫好的 mixin 放入
-  mixins: [fromNowFilter],
+  mixins: [fromNowMethod],
   props: {
     comments: {
       type: Array,

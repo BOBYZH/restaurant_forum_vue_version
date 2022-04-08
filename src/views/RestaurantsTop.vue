@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 import NavTabs from './../components/NavTabs'
 import restaurantsAPI from './../apis/restaurants'
 import usersAPI from './../apis/users'
@@ -81,7 +81,7 @@ export default {
     NavTabs,
     Spinner
   },
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   data () {
     return {
       restaurants: [],

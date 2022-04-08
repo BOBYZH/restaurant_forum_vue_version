@@ -14,7 +14,7 @@
       <div class="col-md-4">
         <img
           class="img-responsive center-block"
-          :src="restaurant.image | emptyImage"
+          :src="emptyImage(restaurant.image)"
           style="width: 250px;margin-bottom: 25px;"
         >
         <div class="well">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 import adminAPI from './../apis/admin'
 import { Toast } from './../utils/helpers'
 import Spinner from './../components/Spinner'
@@ -60,7 +60,7 @@ export default {
   components: {
     Spinner
   },
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   beforeRouteUpdate (to, from, next) { // 監聽路由變化，避免手動改網址後資料沒更新
     const { id } = to.params
     this.fetchRestaurant(id)

@@ -19,7 +19,7 @@
           <small>{{ restaurant.Category ? restaurant.Category.name : '未分類' }}</small>
         </h4>
         <p>{{ restaurant.description }}</p>
-        {{ restaurant.createdAt | fromNow }}
+        {{ fromNow(restaurant.createdAt) }}
         <hr>
       </div>
     </div>
@@ -28,11 +28,11 @@
 
 <script>
 // 載入撰寫好的 mixin
-import { fromNowFilter } from './../utils/mixins'
+import { fromNowMethod } from './../utils/mixins'
 
 export default {
   // 透過 mixins 屬性將撰寫好的 mixin 放入
-  mixins: [fromNowFilter],
+  mixins: [fromNowMethod],
   // 加上 props 屬性取得父層資料
   props: {
     restaurants: {

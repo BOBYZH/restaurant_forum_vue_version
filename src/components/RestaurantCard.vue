@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 
 // STEP 1: 載入 API 方法和 Toast 提示工具
 import usersAPI from './../apis/users'
@@ -73,7 +73,7 @@ import { Toast } from './../utils/helpers'
 
 export default {
   name: 'RestaurantCard',
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   props: {
     initialRestaurant: {
       type: Object,

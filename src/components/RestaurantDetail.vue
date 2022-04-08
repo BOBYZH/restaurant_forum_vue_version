@@ -78,14 +78,14 @@
 </template>
 
 <script>
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
 export default {
   name: 'RestaurantDetail',
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   props: {
     initialRestaurant: {
       type: Object,

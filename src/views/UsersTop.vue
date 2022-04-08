@@ -16,7 +16,7 @@
         >
           <router-link :to="{ name: 'user', params: { id: user.id } }">
             <img
-              :src="user.image | emptyImage"
+              :src="emptyImage(user.image)"
               width="140px"
               height="140px"
             >
@@ -52,7 +52,7 @@
 <script>
 import NavTabs from '../components/NavTabs'
 import Spinner from './../components/Spinner'
-import { emptyImageFilter } from './../utils/mixins'
+import { emptyImageMethod } from './../utils/mixins'
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
@@ -62,7 +62,7 @@ export default {
     NavTabs,
     Spinner
   },
-  mixins: [emptyImageFilter],
+  mixins: [emptyImageMethod],
   data () {
     return {
       users: [],
