@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Router, { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 // 一定會經過的頁面直接在路由裡載入，除此之外的頁面皆用動態載入
 import NotFound from '../views/NotFound.vue'
@@ -19,8 +18,6 @@ const authorizeIsAdmin = (to, from, next) => {
 
   next()
 }
-
-Vue.use(Router)
 
 // 程式碼調動的原因，是因為我們想把 beforeEach 的設定放進 Vue Router 本身，我們需要宣告一個 router 變數來存放 Vue Router 的實例
 const router = createRouter({
@@ -141,7 +138,7 @@ routes: [...]
       beforeEnter: authorizeIsAdmin
     },
     {
-      path: '*',
+      path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: NotFound
     }
