@@ -32,6 +32,7 @@ export default {
       required: true
     }
   },
+  emits: ['after-create-comment'],
   data () {
     return {
       text: '',

@@ -8,6 +8,13 @@
   </div>
 </template>
 
+<script>
+
+export default {
+  name: 'SpinnerComponent'
+}
+</script>
+
 <style scoped>
 .spinner {
   padding-top: 100px;

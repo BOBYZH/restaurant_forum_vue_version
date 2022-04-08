@@ -65,6 +65,7 @@
 import { mapState } from 'vuex'
 
 export default {
+  name: 'NavbarComponent',
   computed: {
     // 使用展開運算式，將store中的資料直接覆蓋過來，更新成目前的使用者資料
     ...mapState(['currentUser', 'isAuthenticated'])

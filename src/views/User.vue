@@ -37,13 +37,18 @@ import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
 export default {
-  name: 'User',
+  name: 'UserPage',
   components: {
     UserProfileCard,
     UserFollowingsCard,
     UserFollowersCard,
     UserCommentsCard,
     UserFavoritedRestaurantsCard
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUser(id)
+    next()
   },
   data () {
     return {
@@ -70,11 +75,6 @@ export default {
   created () {
     const { id } = this.$route.params
     this.fetchUser(id)
-  },
-  beforeRouteUpdate (to, from, next) {
-    const { id } = to.params
-    this.fetchUser(id)
-    next()
   },
   methods: {
     async fetchUser (userId) {

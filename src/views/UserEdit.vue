@@ -51,6 +51,12 @@ import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
 
 export default {
+  beforeRouteUpdate (to, from, next) {
+    if (this.currentUser.id === -1) return
+    const { id } = to.params
+    this.setUser(id)
+    next()
+  },
   data () {
     return {
       id: 0,
@@ -74,12 +80,6 @@ export default {
     if (this.currentUser.id === -1) return
     const { id } = this.$route.params
     this.setUser(id)
-  },
-  beforeRouteUpdate (to, from, next) {
-    if (this.currentUser.id === -1) return
-    const { id } = to.params
-    this.setUser(id)
-    next()
   },
   methods: {
     setUser (userId) {

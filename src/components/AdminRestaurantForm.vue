@@ -156,6 +156,7 @@ export default { // 用 default 設定一組預設值
       }
     }
   },
+  emits: ['after-submit'],
   data () {
     return {
       categories: [],
