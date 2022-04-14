@@ -23,15 +23,10 @@ const authorizeIsAdmin = (to, from, next) => {
 const router = createRouter({
   history: createWebHashHistory(),
 
-  // 網站正式發佈以後，要使用 hash mode 才不會碰到無法取得伺服器回應的情況
+  // 網站正式發佈以後，要使用 hash mode 才不會碰到無法取得伺服器回應的情況(因為Github Pages不支援路徑下完整的history mode)
   /*
 如果看不慣網址列多出 # ，還是想要在正式環境使用 history mode，需要搭配後端網頁伺服器 (apache、nginx、IIS) 來設定頁面導向(主動設置404頁面)，才可以避免出現 Error 404 頁面，詳細設定方法需要參考 HTML5 History 模式
-
-Example:
-export default new Router({ // 改回沒有#改網址會404的的 history mode
-mode: 'history',
-routes: [...]
-})
+(得考慮改用其他平台部署)
 */
 
   // 導覽頁籤會根據瀏覽的網址自動套用不同的 class(將自動產生的當前class名稱換成bootstrap的點擊效果)
