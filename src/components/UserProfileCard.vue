@@ -4,8 +4,8 @@
       <div class="col-md-4">
         <img
           :src="user.image"
-          width="300px"
-          height="300px"
+          width="300"
+          height="300"
         >
       </div>
       <div class="col-md-8">
